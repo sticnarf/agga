@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package me.sticnarf.agga;
+
+message Greeting {
+    string name = 1;
+}
+
+message Bye {
+    string name = 1;
+}
