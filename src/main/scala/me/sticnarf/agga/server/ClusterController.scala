@@ -1,4 +1,4 @@
-package me.sticnarf.agga
+package me.sticnarf.agga.server
 
 import akka.actor.Actor
 import akka.cluster.Cluster
