@@ -1,12 +1,10 @@
 package me.sticnarf.agga.server
 
-import akka.actor.Actor
+import akka.actor.{Actor, ActorLogging}
 import akka.cluster.Cluster
 import akka.cluster.ClusterEvent.{MemberEvent, UnreachableMember}
-import akka.event.Logging
 
-class ClusterController extends Actor {
-  val log = Logging(context.system, this)
+class ClusterController extends Actor with ActorLogging {
   val cluster = Cluster(context.system)
 
   override def preStart(): Unit = {
