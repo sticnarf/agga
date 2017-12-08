@@ -4,7 +4,7 @@ import akka.actor.{Actor, ActorLogging, ActorRef}
 import akka.cluster.Cluster
 import akka.cluster.pubsub.DistributedPubSub
 import akka.cluster.pubsub.DistributedPubSubMediator.SendToAll
-import me.sticnarf.agga.messages.{Connect, ServerInfo, ServerList}
+import me.sticnarf.agga.messages.{FetchServerList, ServerInfo, ServerList}
 import me.sticnarf.agga.server.messages.{RequestServer, ResponseServer}
 
 import scala.collection.mutable
@@ -19,14 +19,14 @@ class Navigator extends Actor with ActorLogging {
   var counter = 1
 
   override def receive = {
-    case c: Connect =>
-      log.debug("Receive connect request. Key: {}, Known servers: {}", c.key, c.knownServers)
+    case FetchServerList(clientKey, knownServers) =>
+      log.debug("Receive connect request. Key: {}, Known servers: {}", clientKey, knownServers)
 
       val seq = counter
       counter += 1
 
       receivedServers.put(seq, ArrayBuffer())
-      mediator ! SendToAll("/user/addressProvider", RequestServer(seq, c.key))
+      mediator ! SendToAll("/user/addressProvider", RequestServer(seq, clientKey))
 
       import scala.concurrent.ExecutionContext.Implicits.global
       context.system.scheduler.scheduleOnce(timeout, self, Timeout(seq, sender()))
