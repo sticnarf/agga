@@ -1,16 +1,14 @@
 package me.sticnarf.agga.server.actors
 
-import java.net.InetSocketAddress
-
 import akka.actor.{Actor, ActorLogging, Props}
 import akka.io.Tcp.Connected
 import me.sticnarf.agga.messages.ClientSegment
+import me.sticnarf.agga.server.AggaConfig
 
 import scala.collection.mutable
 
 class SubAggregator(val conn: Int, val clientKey: String) extends Actor with ActorLogging {
-  val tcpAddr = new InetSocketAddress("localhost", 1080) // Just for debug
-  val tcpClient = context.actorOf(Props(classOf[TcpClient], tcpAddr, conn, clientKey))
+  val tcpClient = context.actorOf(Props(classOf[TcpClient], AggaConfig.tcpAddr, conn, clientKey))
 
   implicit val ord = PacketOrdering
   val queue = mutable.PriorityQueue[ClientSegment]()
