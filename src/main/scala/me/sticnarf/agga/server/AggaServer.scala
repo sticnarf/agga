@@ -16,12 +16,9 @@ object AggaServer extends App {
     "addressProvider"
   )
 
-  val aggregator = system.actorOf(Props[Aggregator], "aggregator")
-  val balancer = system.actorOf(RoundRobinPool(5).props(Balancer.props), "balancer")
-
   // TODO: Postman is not thread-safe yet
   // val redirector = system.actorOf(RoundRobinPool(5).props(Postman.props(AggaConfig.serverId)), "postman")
-  val redirector = system.actorOf(Postman.props(AggaConfig.serverId), "postman")
+  val redirector = system.actorOf(Postman.props, "postman")
 
   val navigators = system.actorOf(RoundRobinPool(5).props(Props[Navigator]), "navigator")
   ClusterClientReceptionist(system).registerService(navigators)

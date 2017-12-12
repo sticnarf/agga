@@ -1,13 +1,11 @@
 package me.sticnarf.agga.server.actors
 
-import akka.actor.{Actor, ActorLogging}
+import akka.actor.{Actor, ActorLogging, ActorRef}
 import akka.io.Tcp.Received
 import me.sticnarf.agga.messages.ServerSegment
 import me.sticnarf.agga.server.messages.SendToClient
 
-class Segmenter(val conn: Int, val clientKey: String) extends Actor with ActorLogging {
-  val balancer = context.actorSelection("/user/balancer")
-
+class Segmenter(val conn: Int, val clientKey: String, val servant: ActorRef) extends Actor with ActorLogging {
   val SEGMENT_SIZE = 3900
 
   var currentSeq = 0
@@ -18,7 +16,7 @@ class Segmenter(val conn: Int, val clientKey: String) extends Actor with ActorLo
         val seq = currentSeq
         currentSeq += 1
         // Send the whole data to the local balancer now
-        balancer ! SendToClient(clientKey,
+        servant ! SendToClient(clientKey,
           Some(ServerSegment(conn, seq, com.google.protobuf.ByteString.copyFrom(bytes.asByteBuffer))))
       }
 

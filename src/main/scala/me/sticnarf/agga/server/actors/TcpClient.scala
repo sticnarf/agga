@@ -2,12 +2,12 @@ package me.sticnarf.agga.server.actors
 
 import java.net.InetSocketAddress
 
-import akka.actor.{Actor, ActorLogging, Props}
+import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import akka.io.{IO, Tcp}
 import akka.util.ByteString
 
-class TcpClient(val remote: InetSocketAddress, val conn: Int, val clientKey: String) extends Actor with ActorLogging {
-  val segmenter = context.actorOf(Props(classOf[Segmenter], conn, clientKey))
+class TcpClient(val remote: InetSocketAddress, val conn: Int, val clientKey: String, val servant: ActorRef) extends Actor with ActorLogging {
+  val segmenter = context.actorOf(Props(classOf[Segmenter], conn, clientKey, servant))
   val aggregator = context.parent
 
   import Tcp._
