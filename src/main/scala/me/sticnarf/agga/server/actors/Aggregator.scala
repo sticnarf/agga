@@ -12,6 +12,6 @@ class Aggregator extends Actor with ActorLogging {
     case p@ClientSegment(conn, _, _, clientKey) =>
       val aggregator = subAggregators.getOrElseUpdate(conn, context.actorOf(Props(classOf[SubAggregator], conn, clientKey)))
       log.info("Redirect to sub-aggregator {}", conn)
-      aggregator forward p
+      aggregator ! p
   }
 }
