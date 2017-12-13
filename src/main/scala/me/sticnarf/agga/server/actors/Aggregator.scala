@@ -28,11 +28,14 @@ class Aggregator(val conn: Int, val clientKey: String, val servant: ActorRef) ex
       if (connected && seq == currentSeq) {
         tcpClient ! akka.util.ByteString(data.asReadOnlyByteBuffer())
         currentSeq += 1
-
         pourAll
       } else {
         queue.enqueue(p)
       }
+
+    case "close" =>
+      tcpClient ! "close"
+      context stop self
   }
 
   def pourAll = {

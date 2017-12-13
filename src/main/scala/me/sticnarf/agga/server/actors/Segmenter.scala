@@ -1,7 +1,7 @@
 package me.sticnarf.agga.server.actors
 
 import akka.actor.{Actor, ActorLogging, ActorRef}
-import akka.io.Tcp.Received
+import akka.io.Tcp.{ConnectionClosed, Received}
 import me.sticnarf.agga.messages.ServerSegment
 import me.sticnarf.agga.server.messages.SendToClient
 
@@ -19,6 +19,10 @@ class Segmenter(val conn: Int, val clientKey: String, val servant: ActorRef) ext
         servant ! SendToClient(clientKey,
           Some(ServerSegment(conn, seq, com.google.protobuf.ByteString.copyFrom(bytes.asByteBuffer))))
       }
+
+    case c: ConnectionClosed =>
+      servant ! (c, conn)
+      context stop self
 
     case x => log.error("Unknown message: {}", x)
   }

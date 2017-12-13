@@ -37,8 +37,8 @@ class TcpClient(val remote: InetSocketAddress, val conn: Int, val clientKey: Str
           segmenter ! r
         case "close" =>
           connection ! Close
-        case _: ConnectionClosed =>
-          segmenter ! "connection closed"
+        case c: ConnectionClosed =>
+          segmenter ! c
           context stop self
       }
   }

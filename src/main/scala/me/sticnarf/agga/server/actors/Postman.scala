@@ -42,7 +42,6 @@ class Postman(val remotes: mutable.HashMap[String, ActorRef],
       remotes.get(clientKey).foreach(_ ! Ack(AggaConfig.serverId))
 
     case p@ClientSegment(conn, seq, data, clientKey) =>
-      log.info("Received {} bytes", data.size())
       clients(clientKey) ! p
 
     case s@SendToClient(clientKey, Some(data)) =>
