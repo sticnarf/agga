@@ -1,4 +1,4 @@
-package me.sticnarf.agga.server.actors
+package me.sticnarf.agga.server.actors.main
 
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import akka.io.Tcp.Connected

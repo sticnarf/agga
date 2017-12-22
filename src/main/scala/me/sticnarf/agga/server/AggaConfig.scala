@@ -10,7 +10,7 @@ object AggaConfig {
   private val tcpRedirConfig = config.getConfig("tcp-redir")
 
   val tcpAddr = new InetSocketAddress(tcpRedirConfig.getString("hostname"), tcpRedirConfig.getInt("port"))
-  val serverId = UUID.randomUUID().toString
+  val serverId: String = UUID.randomUUID().toString
 
   import scala.collection.JavaConverters._
 

@@ -1,4 +1,4 @@
-package me.sticnarf.agga.server.actors
+package me.sticnarf.agga.server.actors.main
 
 import java.net.InetSocketAddress
 

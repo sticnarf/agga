@@ -1,4 +1,4 @@
-package me.sticnarf.agga.server
+package me.sticnarf.agga.server.actors.cluster
 
 import akka.actor.{Actor, ActorLogging}
 import akka.cluster.Cluster
